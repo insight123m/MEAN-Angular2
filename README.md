@@ -1,2 +1,2 @@
 # MEAN-Angular2
-MEAN tutorial
+MEAN app with Angular 2 (Tutorial from Youtube)

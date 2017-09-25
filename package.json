@@ -1,0 +1,24 @@
+{
+  "name": "mean-angular2",
+  "version": "1.0.0",
+  "description": "MEAN stack with Angular 2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [
+    "MEAN Stack",
+    "Angular2"
+  ],
+  "author": "Inder2108",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "crypto": "^1.0.1",
+    "express": "^4.15.4",
+    "mongoose": "^4.11.12"
+  }
+}
