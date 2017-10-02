@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   form: FormGroup;
-  messageClass: String;
-  message: String;
+  message;
+  messageClass;
   processing = false;
   emailValid;
   emailMessage;
@@ -56,6 +56,7 @@ export class RegisterComponent implements OnInit {
     }, { validator: this.matchingPasswords('password', 'confirm') }); // Add custom validator to form for matching passwords
   }
 
+  // Function to disable the registration form
   disableForm() {
     this.form.controls['email'].disable();
     this.form.controls['username'].disable();
@@ -63,6 +64,7 @@ export class RegisterComponent implements OnInit {
     this.form.controls['confirm'].disable();
   }
 
+  // Function to enable the registration form
   enableForm() {
     this.form.controls['email'].enable();
     this.form.controls['username'].enable();
@@ -120,49 +122,61 @@ export class RegisterComponent implements OnInit {
 
   // Function to submit form
   onRegisterSubmit() {
-    this.processing = true;
-    this.disableForm();
+    this.processing = true; // Used to notify HTML that form is in processing, so that it can be disabled
+    this.disableForm(); // Disable the form
+    // Create user object form user's inputs
     const user = {
-      email: this.form.get('email').value,
-      username: this.form.get('username').value,
-      password: this.form.get('password').value
-    };
+      email: this.form.get('email').value, // E-mail input field
+      username: this.form.get('username').value, // Username input field
+      password: this.form.get('password').value // Password input field
+    }
+
+    // Function from authentication service to register user
     this.authService.registerUser(user).subscribe(data => {
-      if(!data.success) {
-        this.messageClass = 'alert alert-danger';
-        this.message = data.message;
-        this.processing = false;
-        this.enableForm();
+      // Resposne from registration attempt
+      if (!data.success) {
+        this.messageClass = 'alert alert-danger'; // Set an error class
+        this.message = data.message; // Set an error message
+        this.processing = false; // Re-enable submit button
+        this.enableForm(); // Re-enable form
       } else {
-        this.messageClass = 'alert alert-success';
-        this.message = data.message;
+        this.messageClass = 'alert alert-success'; // Set a success class
+        this.message = data.message; // Set a success message
+        // After 2 second timeout, navigate to the login page
         setTimeout(() => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login']); // Redirect to login view
         }, 2000);
       }
     });
+
   }
 
-  checkUsername() {
-    this.authService.checkUsername(this.form.get('username').value).subscribe(data => {
-      if(!data.success) {
-        this.usernameValid = false;
-        this.usernameMessage = data.message;
+  // Function to check if e-mail is taken
+  checkEmail() {
+    // Function from authentication file to check if e-mail is taken
+    this.authService.checkEmail(this.form.get('email').value).subscribe(data => {
+      // Check if success true or false was returned from API
+      if (!data.success) {
+        this.emailValid = false; // Return email as invalid
+        this.emailMessage = data.message; // Return error message
       } else {
-        this.usernameValid = true;
-        this.usernameMessage = data.message;
+        this.emailValid = true; // Return email as valid
+        this.emailMessage = data.message; // Return success message
       }
     });
   }
 
-  checkEmail() {
-    this.authService.checkEmail(this.form.get('email').value).subscribe(data => {
-      if(!data.success) {
-        this.emailValid = false;
-        this.emailMessage = data.message;
+  // Function to check if username is available
+  checkUsername() {
+    // Function from authentication file to check if username is taken
+    this.authService.checkUsername(this.form.get('username').value).subscribe(data => {
+      // Check if success true or success false was returned from API
+      if (!data.success) {
+        this.usernameValid = false; // Return username as invalid
+        this.usernameMessage = data.message; // Return error message
       } else {
-        this.emailValid = true;
-        this.emailMessage = data.message;
+        this.usernameValid = true; // Return username as valid
+        this.usernameMessage = data.message; // Return success message
       }
     });
   }
