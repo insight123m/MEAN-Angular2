@@ -29,6 +29,10 @@
     "cors": "^2.8.3",
     "express": "^4.15.3",
     "jsonwebtoken": "^7.4.1",
-    "mongoose": "^4.10.2"
+    "mongoose": "^4.10.2",
+    "passport": "~0.1.17",
+    "passport-local": "~0.1.6",
+    "cookie-parser": "~1.0.0",
+    "express-session": "~1.0.0"
   }
 }
